@@ -29,10 +29,12 @@ setStatus(Status.PENDING);
      imagesApi
      .fetchImages(formValue,page)
      .then(r =>{
-    
-    setImage((prev) =>{return {...prev,...r.hits}})
+    console.log(r.hits);
+    setImage((prev) =>
+      [...prev,...r.hits]
+    )
      setStatus(Status.RESOLVED)
-    
+    console.log(image);
   
     if (page * 12>=r.totalHits){
       setStatus(Status.IDLE )
@@ -70,16 +72,16 @@ setStatus(Status.PENDING);
   return (
     <div className="App" >
     <Searchbar onSubmit={formSubmitHendler} />
-    {status === 'pending'&&
+    {status === Status.PENDING &&
       (<Loader/>)
     }
     <ImageGallary images={image}  />
-    {image.length > 0 && status === 'resolved' && 
+    {image.length > 0 && status === Status.RESOLVED && 
       (<button onClick = {onLoadMore} className="Button">Load more</button>
       )
     }
    </div>
-  );
+  ); 
 }
 
  
