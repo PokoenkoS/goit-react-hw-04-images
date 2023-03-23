@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Searchbar from './Searchbar';
 import ImageGallary from './ImageGallery';
 import imagesApi from './ImageApi'
@@ -11,68 +11,69 @@ const Status = {
   REJECTED: 'rejected',
 };
 
-export class App extends Component {
-  state ={
-    formValue : '',
-    image: [],
-    error: null,
-    status: Status.IDLE,
-    page: 1,
- }
+export const App=()=> {
+  const [formValue, setFormValue] = useState('');
+  const [image, setImage] = useState([]);
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState(Status.IDLE);
+  const [page, setPage] = useState(1);
 
-  componentDidUpdate(prevProps, prevState) {
-  const {formValue, page, image} = this.state;
-  if(prevState.formValue!==formValue || prevState.page!== page){
-  this.setState({ status: Status.PENDING });
+
+  useEffect(()=>{
+    if (!formValue) {
+      return;
+  }
+
+setStatus(Status.PENDING);
+
      imagesApi
      .fetchImages(formValue,page)
      .then(r =>{
     
-    this.setState(prevState =>({
-      image:[...prevState.image,...r.hits],
-      status: Status.RESOLVED
-    }))
+    setImage((prev) =>{return {...prev,...r.hits}})
+     setStatus(Status.RESOLVED)
+    
   
     if (page * 12>=r.totalHits){
-      this.setState(prevState=>({ status: Status.IDLE }))
+      setStatus(Status.IDLE )
       return alert('It`s all');
-     
-       }
+          }
 
   })
-  .catch(error => this.setState({ error, status: Status.REJECTED  }))
+  .catch(error => {
+    setError(error)
+    setStatus(Status.REJECTED)
+  }) 
+}, [formValue, page]);
+
+
   
-}
 
-  }
-
-  formSubmitHendler =data=> {
-   
-      this.setState ({
-        formValue: data.value,
-        page:1,
-        image:[],
-        error: null,
-        status: Status.IDLE,
-       })
+ const formSubmitHendler =data=> {
+   setFormValue(data.value)
+      // this.setState ({
+      //   formValue: data.value,
+      //   page:1,
+      //   image:[],
+      //   error: null,
+      //   status: Status.IDLE,
+      //  })
      }
 
-  onLoadMore = ()=> {
-   this.setState(({ page }) => {
-      return { page: (page += 1) };
+ const onLoadMore = ()=> {
+   setPage(( page ) => {
+      return page += 1
     });
   }
 
-render () {
-  const {status, image,} = this.state;
-  const {formSubmitHendler, imageHendler, onLoadMore} = this;
+
   return (
     <div className="App" >
     <Searchbar onSubmit={formSubmitHendler} />
     {status === 'pending'&&
       (<Loader/>)
     }
-    <ImageGallary images={image} onImg={imageHendler} />
+    <ImageGallary images={image}  />
     {image.length > 0 && status === 'resolved' && 
       (<button onClick = {onLoadMore} className="Button">Load more</button>
       )
@@ -82,4 +83,4 @@ render () {
 }
 
  
-};
+
