@@ -1,37 +1,38 @@
-import React, { Component } from "react";
+import React, { useState, useEffect} from "react";
 import  "./styles.css"
 import { createPortal } from "react-dom";
 
 const modalRoot= document.querySelector('#modal-root')
 
-class Modal extends Component  {
+const Modal =({onClose,item}) => {
+  
+const [showModal, setShowModal] = useState(false);
 
-state= {
-    showModal: false
-}
-componentDidMount() {
-    window.addEventListener('keydown',this.onKeydownHandler)
-}
+useEffect(() => {
+  window.addEventListener('keydown',onKeydownHandler)
 
-componentWillUnmount(){
-  window.removeEventListener('keydown',this.onKeydownHandler)
-}
-onKeydownHandler = e => {
+ }, []);
+
+useEffect(() => {
+  window.removeEventListener('keydown',onKeydownHandler)
+
+}, []);
+
+const onKeydownHandler = e => {
     if (e.code === 'Escape') {
-      this.props.onClose();
+      onClose();
     }
   };
 
-  onOverlayClickHandle = e => {
+ const onOverlayClickHandle = e => {
     if (e.currentTarget === e.target) {
-      this.props.onClose();
+      onClose();
     }
   };
-render() {
-    const {item}=this.props
+
     return (
         createPortal(
- <div className="Overlay" onClick={this.onOverlayClickHandle}>
+ <div className="Overlay" onClick={onOverlayClickHandle}>
 <div className="Modal">
  <img src={item.largeImageURL}  alt={item.tags} />
  </div>
@@ -41,5 +42,5 @@ render() {
 
 }
 
-}
+
 export default Modal;

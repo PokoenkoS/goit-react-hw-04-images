@@ -29,13 +29,11 @@ setStatus(Status.PENDING);
      imagesApi
      .fetchImages(formValue,page)
      .then(r =>{
-    console.log(r.hits);
-    setImage((prev) =>
+     setImage((prev) =>
       [...prev,...r.hits]
     )
      setStatus(Status.RESOLVED)
-    console.log(image);
-  
+   
     if (page * 12>=r.totalHits){
       setStatus(Status.IDLE )
       return alert('It`s all');
@@ -49,10 +47,8 @@ setStatus(Status.PENDING);
 }, [formValue, page]);
 
 
-  
-
  const formSubmitHendler =data=> {
-   setFormValue(data.value)
+   setFormValue(data)
       // this.setState ({
       //   formValue: data.value,
       //   page:1,
@@ -60,6 +56,7 @@ setStatus(Status.PENDING);
       //   error: null,
       //   status: Status.IDLE,
       //  })
+      console.log(data);
      }
 
  const onLoadMore = ()=> {

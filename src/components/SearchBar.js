@@ -1,35 +1,27 @@
 import React from "react";
-import { Component } from "react";
+import { useState } from "react";
 import { BsSearch} from "@react-icons/all-files/bs/BsSearch";
 import  "./styles.css"
 
 
 
-class Searchbar extends Component{
-    state = {
-     value: "",
-    
-    }
-handleChange = e => {
-   
-    this.setState({value: e.currentTarget.value})
-   
-}
+const Searchbar =({onSubmit})=> {
+const [value, setValue] = useState('');
 
-handleSubmit = e => {
+const handleChange = e => setValue(e.currentTarget.value);
+   
+const handleSubmit = e => {
     e.preventDefault();
-    if(this.state.value.trim() ===""){
+    if(value.trim() ===""){
         return alert('Введите название картинки')
     }
-    this.props.onSubmit(this.state);
-    this.setState({value: ""})
-  
-}
+    onSubmit(value);
+    setValue("")
+  }
 
-    render(){
-        return (
+  return (
 <header className="Searchbar">
-  <form onSubmit={this.handleSubmit} className="SearchForm">
+  <form onSubmit={handleSubmit} className="SearchForm">
     <button type="submit" className="SearchForm-button">< BsSearch/>
       <span className="SearchForm-button-label ">Search</span>
     </button>
@@ -40,12 +32,12 @@ handleSubmit = e => {
       autoComplete="off"
       autoFocus
       placeholder="Search images and photos"
-      onChange={this.handleChange}
+      onChange={handleChange}
     />
   </form>
 </header>
         )
     }
-}
+
 
 export default Searchbar
