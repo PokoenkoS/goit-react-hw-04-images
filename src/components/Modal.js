@@ -5,8 +5,8 @@ import { createPortal } from "react-dom";
 const modalRoot= document.querySelector('#modal-root')
 
 const Modal =({onClose,item}) => {
-  
-const [showModal, setShowModal] = useState(false);
+
+// const [showModal, setShowModal] = useState(false);
 
 useEffect(() => {
   window.addEventListener('keydown',onKeydownHandler)
@@ -30,14 +30,14 @@ const onKeydownHandler = e => {
     }
   };
 
-    return (
-        createPortal(
+    return  (
+        
  <div className="Overlay" onClick={onOverlayClickHandle}>
 <div className="Modal">
  <img src={item.largeImageURL}  alt={item.tags} />
  </div>
-</div>, modalRoot
-        )
+</div>
+        
     )
 
 }

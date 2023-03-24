@@ -17,7 +17,7 @@ import Modal from "./Modal";
           className="ImageGalleryItem-image"
           onClick={onToggle}/>
       </li>
-      isSelect && (<Modal onClose={onToggle} item={item}/>)
+     { isSelect && (<Modal onClose={onToggle} item={item}/>)}
       </>
   )}
       

@@ -48,15 +48,12 @@ setStatus(Status.PENDING);
 
 
  const formSubmitHendler =data=> {
-   setFormValue(data)
-      // this.setState ({
-      //   formValue: data.value,
-      //   page:1,
-      //   image:[],
-      //   error: null,
-      //   status: Status.IDLE,
-      //  })
-      console.log(data);
+   setFormValue(data);
+   setPage(1);
+   setImage([]);
+   setError(null);
+   setStatus(Status.IDLE)
+      
      }
 
  const onLoadMore = ()=> {
