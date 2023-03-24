@@ -40,7 +40,7 @@ setStatus(Status.PENDING);
           }
 
   })
-  .catch(error => {
+.catch((error) => {
     setError(error)
     setStatus(Status.REJECTED)
   }) 
@@ -64,7 +64,9 @@ setStatus(Status.PENDING);
 
 
   return (
+   
     <div className="App" >
+       {error && (<h1> Ошибка </h1>)}
     <Searchbar onSubmit={formSubmitHendler} />
     {status === Status.PENDING &&
       (<Loader/>)
